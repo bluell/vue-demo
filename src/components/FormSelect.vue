@@ -5,14 +5,16 @@
   >
     <label
       v-if="label"
+      class="form-label"
       :for="htmlId"
     >
       {{ label }}:
     </label>
     <select
+      v-model="dataVal"
+      class="form-select"
       :id="htmlId"
-      @change="handleChangePriorityVal"
-      v-model="priority"
+      @change="changeVal"
     >
       <option
         v-for="option in options"
@@ -37,15 +39,20 @@ export default {
   },
   data: function() {
     return {
-      priority: '0'
+      dataVal: ''
+    }
+  },
+  watch: {
+    val: function(val) {
+      this.dataVal = val;
     }
   },
   mounted: function() {
-    this.priority = this.val;
+    this.dataVal = this.val;
   },
   methods: {
-    handleChangePriorityVal: function() {
-      this.$emit('changePriorityVal', this.priority);
+    changeVal: function() {
+      this.$emit('changeVal', this.dataVal);
     }
   }
 }
@@ -58,11 +65,11 @@ export default {
   align-items: center;
 }
 
-label {
+.form-label {
   font-weight: bold;
 }
 
-select {
+.form-select {
   padding: 0 10px;
   border-radius: 6px;
   height: 32px;

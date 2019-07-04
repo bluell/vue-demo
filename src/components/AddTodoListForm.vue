@@ -1,20 +1,23 @@
 <template>
   <div class="add-todo-list">
     <form-text
-      :className="task.className"
-      :placeholder="task.placeholder"
-      :val="task.val"
-      @changeTaskVal="changeTaskVal"
+      :className="addTodoListForm.task.className"
+      :errClassName="addTodoListForm.task.errClassName"
+      :placeholder="addTodoListForm.task.placeholder"
+      :val="addTodoListForm.task.val"
+      @changeVal="changeTaskVal"
     />
     <form-select
-      :className="priority.className"
-      :options="priority.options"
-      :val="priority.val"
-      @changePriorityVal="changePriorityVal"
+      :className="addTodoListForm.priority.className"
+      :options="addTodoListForm.priority.options"
+      :val="addTodoListForm.priority.val"
+      @changeVal="changePriorityVal"
     />
+    <!-- 多级嵌套$listeners -->
     <form-button
-      :className="addBtn.className"
-      :label="addBtn.label"
+      :className="addTodoListForm.addBtn.className"
+      :label="addTodoListForm.addBtn.label"
+      v-on="$listeners"
     />
   </div>
 </template>
@@ -31,47 +34,34 @@ export default {
     FormSelect,
     FormButton
   },
-  data: function() {
-    return {
+  props: {
+    addTodoListForm: {
       task: {
-        className: 'add-task',
-        placeholder: 'Task',
-        val: ''
+        className: String,
+        errClassName: String,
+        placeholder: String,
+        val: String
       },
       priority: {
-        className: 'add-priority',
-        options: [{
-          id: 'priority-0',
-          value: '0',
-          text: 'None'
-        }, {
-          id: 'priority-1',
-          value: '1',
-          text: 'Critical'
-        }, {
-          id: 'priority-2',
-          value: '2',
-          text: 'High'
-        }, {
-          id: 'priority-3',
-          value: '3',
-          text: 'Low'
-        }],
-        val: '0'
+        className: String,
+        options: Array,
+        val: String
       },
       addBtn: {
-        className: 'add-btn',
-        label: 'Add'
+        className: String,
+        label: String
       }
     }
   },
   methods: {
     changeTaskVal: function(val) {
-      this.task.val = val;
+
+      // 多级嵌套emit.
+      this.$emit('changeTaskVal', val);
     },
     
     changePriorityVal: function(val) {
-      this.priority.val = val;
+      this.$emit('changePriorityVal', val);
     }
   }
 }

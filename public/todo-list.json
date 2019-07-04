@@ -2,21 +2,21 @@
   "todoList": [{
     "id": 1,
     "task": "VIST-123",
-    "priority": 1
+    "priority": "1"
   }, {
     "id": 2,
     "task": "幼儿园"
   }, {
     "id": 3,
     "task": "宁波银行",
-    "priority": 3
+    "priority": "3"
   }, {
     "id": 4,
     "task": "额温枪",
-    "priority": 1
+    "priority": "1"
   }, {
     "id": 5,
-    "task": "入院体检一寸照",
-    "priority": 2
+    "task": "入园体检一寸照",
+    "priority": "2"
   }]
 }

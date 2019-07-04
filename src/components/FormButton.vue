@@ -1,7 +1,9 @@
 <template>
   <button
     type="button"
+    class="btn"
     :class="[className]"
+    @click="clickBtn"
   >
     {{ label }}
   </button>
@@ -13,12 +15,17 @@ export default {
   props: {
     className: String,
     label: String
+  },
+  methods: {
+    clickBtn: function() {
+      this.$emit('clickBtn');
+    }
   }
 }
 </script>
 
 <style scoped>
-button {
+.btn {
   padding: 0 10px;
   border-radius: 6px;
   height: 32px;

@@ -1,4 +1,5 @@
 <template>
+  <!-- class绑定 -->
   <div
     class="todo-priority"
     :class="[priorityClass, iconClass]"
@@ -11,16 +12,16 @@
 export default {
   name: 'TodoListPriority',
   props: {
-    priority: Number
+    priority: String
   },
   computed: {
     priorityClass: function() {
       switch (this.priority) {
-        case 1:
+        case '1':
           return 'critical';
-        case 2:
+        case '2':
           return 'high';
-        case 3:
+        case '3':
           return 'low';
         default:
           return '';
@@ -28,10 +29,10 @@ export default {
     },
     iconClass: function() {
       switch (this.priority) {
-        case 1:
-        case 2:
+        case '1':
+        case '2':
           return 'icon-exclamation';
-        case 3:
+        case '3':
           return 'icon-arrow-down';
         default:
           return '';
@@ -39,11 +40,11 @@ export default {
     },
     priorityMessage: function() {
       switch (this.priority) {
-        case 1:
+        case '1':
           return 'critical';
-        case 2:
+        case '2':
           return 'high';
-        case 3:
+        case '3':
           return 'low';
         default:
           return '';

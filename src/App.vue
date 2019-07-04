@@ -8,22 +8,30 @@
             :htmlId="sort.htmlId"
             :label="sort.label"
             :options="sort.options"
+            :val="sort.val"
           />
           <form-select
             :htmlId="filter.htmlId"
             :label="filter.label"
             :options="filter.options"
+            :val="filter.val"
           />
         </div>
       </base-header>
       <base-loading v-if="loading" />
       <todo-list :todoList="todoList" />
-      <add-todo-list-form />
+      <add-todo-list-form
+        :addTodoListForm="addTodoListForm"
+        @changeTaskVal="updateNewTodoTask"
+        @changePriorityVal="updateNewTodoPriority"
+        @clickBtn="addTodoList"
+      />
     </div>
   </div>
 </template>
 
 <script>
+// import deepcopy from 'deepcopy';
 import BaseLoading from './components/BaseLoading.vue';
 import BaseHeader from './components/BaseHeader.vue';
 import FormSelect from './components/FormSelect.vue';
@@ -59,7 +67,8 @@ export default {
           id: 'sort-by-priority-des',
           value: 'sort by priority des',
           text: 'Priority低的在前面'
-        }]
+        }],
+        val: 'sort by time'
       },
       filter: {
         htmlId: 'filter-todo-list',
@@ -80,7 +89,41 @@ export default {
           id: 'filter-3',
           value: '3',
           text: 'Low'
-        }]
+        }],
+        val: 'all'
+      },
+      addTodoListForm: {
+        task: {
+          className: 'add-task',
+          errClassName: '',
+          placeholder: 'Task',
+          val: ''
+        },
+        priority: {
+          className: 'add-priority',
+          options: [{
+            id: 'priority-0',
+            value: '0',
+            text: 'None'
+          }, {
+            id: 'priority-1',
+            value: '1',
+            text: 'Critical'
+          }, {
+            id: 'priority-2',
+            value: '2',
+            text: 'High'
+          }, {
+            id: 'priority-3',
+            value: '3',
+            text: 'Low'
+          }],
+          val: '0'
+        },
+        addBtn: {
+          className: 'add-btn',
+          label: 'Add'
+        }
       }
     };
   },
@@ -95,6 +138,31 @@ export default {
           this.todoList = response.data.todoList;
         }, 1000);
       });
+    },
+
+    updateNewTodoTask: function(val) {
+      this.addTodoListForm.task.val = val;
+    },
+
+    updateNewTodoPriority: function(val) {
+      this.addTodoListForm.priority.val = val;
+    },
+
+    addTodoList: function() {
+      if (this.addTodoListForm.task.val === '') {
+        this.addTodoListForm.task.errClassName = 'error';
+      }
+      else {
+        let newTodo = {
+          id: new Date().getTime(),
+          task: this.addTodoListForm.task.val,
+          priority: this.addTodoListForm.priority.val
+        };
+        this.todoList.push(newTodo);
+        this.addTodoListForm.task.val = '';
+        this.addTodoListForm.priority.val = '0';
+        this.addTodoListForm.task.errClassName = '';
+      }
     }
   },
   mounted: function() {

@@ -1,13 +1,15 @@
 <template>
   <div
     class="form-item"
-    :class="[className]"
+    :class="[className, errClassName]"
   >
+    <!-- v-model的使用 -->
     <input
+      v-model="dataVal"
       type="text"
-      v-model="task"
+      class="form-text"
       :placeholder="placeholder"
-      @input="handleChangeTaskVal"
+      @input="changeVal"
     />
   </div>
 </template>
@@ -17,20 +19,28 @@ export default {
   name: 'FormText',
   props: {
     className: String,
+    errClassName: String,
     placeholder: String,
     val: String
   },
   data: function() {
     return {
-      task: ''
+      dataVal: ''
     };
   },
+
+  // watch的使用
+  watch: {
+    val: function(val) {
+      this.dataVal = val;
+    }
+  },
   mounted: function() {
-    this.task = this.val;
+    this.dataVal = this.val;
   },
   methods: {
-    handleChangeTaskVal: function() {
-      this.$emit('changeTaskVal', this.task);
+    changeVal: function() {
+      this.$emit('changeVal', this.dataVal);
     }
   }
 }
@@ -43,7 +53,7 @@ export default {
   align-items: center;
 }
 
-input {
+.form-text {
   padding: 0 10px;
   border-radius: 6px;
   height: 32px;
@@ -51,5 +61,10 @@ input {
   border: 1px solid #999;
   box-sizing: border-box;
   width: 100%;
+}
+
+.error .form-text {
+  border-color: #df0000;
+  color: #df0000;
 }
 </style>
