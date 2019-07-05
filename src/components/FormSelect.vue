@@ -3,6 +3,7 @@
     class="form-item"
     :class="[className]"
   >
+    <!-- 条件渲染 -->
     <label
       v-if="label"
       class="form-label"

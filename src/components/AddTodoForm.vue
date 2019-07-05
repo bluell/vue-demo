@@ -1,22 +1,22 @@
 <template>
-  <div class="add-todo-list">
+  <div class="add-todo-form">
     <form-text
-      :className="addTodoListForm.task.className"
-      :errClassName="addTodoListForm.task.errClassName"
-      :placeholder="addTodoListForm.task.placeholder"
-      :val="addTodoListForm.task.val"
+      :className="addTodoForm.task.className"
+      :errClassName="addTodoForm.task.errClassName"
+      :placeholder="addTodoForm.task.placeholder"
+      :val="addTodoForm.task.val"
       @changeVal="changeTaskVal"
     />
     <form-select
-      :className="addTodoListForm.priority.className"
-      :options="addTodoListForm.priority.options"
-      :val="addTodoListForm.priority.val"
+      :className="addTodoForm.priority.className"
+      :options="addTodoForm.priority.options"
+      :val="addTodoForm.priority.val"
       @changeVal="changePriorityVal"
     />
     <!-- 多级嵌套$listeners -->
     <form-button
-      :className="addTodoListForm.addBtn.className"
-      :label="addTodoListForm.addBtn.label"
+      :className="addTodoForm.addBtn.className"
+      :label="addTodoForm.addBtn.label"
       v-on="$listeners"
     />
   </div>
@@ -28,14 +28,14 @@ import FormSelect from './FormSelect.vue';
 import FormButton from './FormButton.vue';
 
 export default {
-  name: 'AddTodoListForm',
+  name: 'AddTodoForm',
   components: {
     FormText,
     FormSelect,
     FormButton
   },
   props: {
-    addTodoListForm: {
+    addTodoForm: {
       task: {
         className: String,
         errClassName: String,
@@ -68,7 +68,7 @@ export default {
 </script>
 
 <style scoped>
-.add-todo-list {
+.add-todo-form {
   display: flex;
   margin: 30px 0;
   box-sizing: border-box;

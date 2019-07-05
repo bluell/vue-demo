@@ -19,12 +19,15 @@
         </div>
       </base-header>
       <base-loading v-if="loading" />
-      <todo-list :todoList="todoList" />
-      <add-todo-list-form
-        :addTodoListForm="addTodoListForm"
+      <todo-list
+        :todoList="todoList"
+        @removeTodo="removeTodo"
+      />
+      <add-todo-form
+        :addTodoForm="addTodoForm"
         @changeTaskVal="updateNewTodoTask"
         @changePriorityVal="updateNewTodoPriority"
-        @clickBtn="addTodoList"
+        @clickBtn="addTodo"
       />
     </div>
   </div>
@@ -36,7 +39,7 @@ import BaseLoading from './components/BaseLoading.vue';
 import BaseHeader from './components/BaseHeader.vue';
 import FormSelect from './components/FormSelect.vue';
 import TodoList from './components/TodoList.vue';
-import AddTodoListForm from './components/AddTodoListForm.vue';
+import AddTodoForm from './components/AddTodoForm.vue';
 import { setTimeout } from 'timers';
 
 export default {
@@ -46,7 +49,7 @@ export default {
     BaseHeader,
     FormSelect,
     TodoList,
-    AddTodoListForm
+    AddTodoForm
   },
   data: function() {
     return {
@@ -92,7 +95,7 @@ export default {
         }],
         val: 'all'
       },
-      addTodoListForm: {
+      addTodoForm: {
         task: {
           className: 'add-task',
           errClassName: '',
@@ -141,28 +144,32 @@ export default {
     },
 
     updateNewTodoTask: function(val) {
-      this.addTodoListForm.task.val = val;
+      this.addTodoForm.task.val = val;
     },
 
     updateNewTodoPriority: function(val) {
-      this.addTodoListForm.priority.val = val;
+      this.addTodoForm.priority.val = val;
     },
 
-    addTodoList: function() {
-      if (this.addTodoListForm.task.val === '') {
-        this.addTodoListForm.task.errClassName = 'error';
+    addTodo: function() {
+      if (this.addTodoForm.task.val === '') {
+        this.addTodoForm.task.errClassName = 'error';
       }
       else {
         let newTodo = {
           id: new Date().getTime(),
-          task: this.addTodoListForm.task.val,
-          priority: this.addTodoListForm.priority.val
+          task: this.addTodoForm.task.val,
+          priority: this.addTodoForm.priority.val
         };
         this.todoList.push(newTodo);
-        this.addTodoListForm.task.val = '';
-        this.addTodoListForm.priority.val = '0';
-        this.addTodoListForm.task.errClassName = '';
+        this.addTodoForm.task.val = '';
+        this.addTodoForm.priority.val = '0';
+        this.addTodoForm.task.errClassName = '';
       }
+    },
+
+    removeTodo: function(index) {
+      this.todoList.splice(index, 1);
     }
   },
   mounted: function() {

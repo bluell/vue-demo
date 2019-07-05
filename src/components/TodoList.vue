@@ -1,7 +1,11 @@
 <template>
   <ul>
-    <li v-for="item in todoList" :key="item.id">
-      <form-checkbox />
+    <!-- 列表渲染 -->
+    <li v-for="(item, index) in todoList" :key="item.id">
+      <form-checkbox
+        :checkboxIndex="index"
+        @changeStatus="removeTodo"
+      />
       <div class="task">{{ item.task }}</div>
       <todo-list-priority
         :v-if="item.priority"
@@ -17,12 +21,17 @@ import TodoListPriority from './TodoListPriority.vue';
 
 export default {
   name: 'TodoList',
-  props: {
-    todoList: Array
-  },
   components: {
     FormCheckbox,
     TodoListPriority
+  },
+  props: {
+    todoList: Array
+  },
+  methods: {
+    removeTodo: function(index) {
+      this.$emit('removeTodo', index);
+    }
   }
 }
 </script>
