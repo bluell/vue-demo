@@ -1,7 +1,11 @@
 <template>
-  <div class="form-item">
+  <div
+    class="form-item"
+    :class="[checkboxClass]"
+  >
     <input
       type="checkbox"
+      class="form-checkbox"
       @change="changeStatus"
     />
   </div>
@@ -11,7 +15,8 @@
 export default {
   name: 'FormCheckbox',
   props: {
-    checkboxIndex: Number
+    checkboxIndex: Number,
+    checkboxClass: String
   },
   methods: {
     changeStatus: function() {
@@ -22,5 +27,7 @@ export default {
 </script>
 
 <style scoped>
-
+.form-checkbox {
+  cursor: pointer;
+}
 </style>

@@ -1,22 +1,26 @@
 <template>
-  <div class="add-todo-form">
+  <div
+    class="todo-form"
+    :class="[todoForm.formClass]"
+  >
     <form-text
-      :className="addTodoForm.task.className"
-      :errClassName="addTodoForm.task.errClassName"
-      :placeholder="addTodoForm.task.placeholder"
-      :val="addTodoForm.task.val"
+      ref="formText"
+      :className="todoForm.task.className"
+      :errClassName="todoForm.task.errClassName"
+      :placeholder="todoForm.task.placeholder"
+      :val="todoForm.task.val"
       @changeVal="changeTaskVal"
     />
     <form-select
-      :className="addTodoForm.priority.className"
-      :options="addTodoForm.priority.options"
-      :val="addTodoForm.priority.val"
+      :className="todoForm.priority.className"
+      :options="todoForm.priority.options"
+      :val="todoForm.priority.val"
       @changeVal="changePriorityVal"
     />
     <!-- 多级嵌套$listeners -->
     <form-button
-      :className="addTodoForm.addBtn.className"
-      :label="addTodoForm.addBtn.label"
+      :className="todoForm.saveBtn.className"
+      :label="todoForm.saveBtn.label"
       v-on="$listeners"
     />
   </div>
@@ -28,14 +32,15 @@ import FormSelect from './FormSelect.vue';
 import FormButton from './FormButton.vue';
 
 export default {
-  name: 'AddTodoForm',
+  name: 'TodoForm',
   components: {
     FormText,
     FormSelect,
     FormButton
   },
   props: {
-    addTodoForm: {
+    todoForm: {
+      formClass: String,
       task: {
         className: String,
         errClassName: String,
@@ -47,7 +52,7 @@ export default {
         options: Array,
         val: String
       },
-      addBtn: {
+      saveBtn: {
         className: String,
         label: String
       }
@@ -68,22 +73,29 @@ export default {
 </script>
 
 <style scoped>
-.add-todo-form {
+.todo-form {
   display: flex;
   margin: 30px 0;
   box-sizing: border-box;
-  max-width: 700px;
 }
 
 .add-task {
-  width: 50%;
+  width: 56%;
+  padding: 0 2% 0 6%;
+  box-sizing: border-box;
 }
 
 .add-priority {
-  width: 30%;
+  width: 26%;
+  padding-right: 2%;
 }
 
 .add-btn {
-  width: 20%;
+  width: 14%;
+}
+
+.edit-todo-form .add-btn {
+  background-color: #41b883;
+  border-color: #41b883;
 }
 </style>

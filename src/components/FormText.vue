@@ -5,6 +5,7 @@
   >
     <!-- v-model的使用 -->
     <input
+      ref="formText"
       v-model="dataVal"
       type="text"
       class="form-text"
@@ -41,6 +42,10 @@ export default {
   methods: {
     changeVal: function() {
       this.$emit('changeVal', this.dataVal);
+    },
+
+    select: function() {
+      this.$refs.formText.select();
     }
   }
 }
@@ -48,7 +53,6 @@ export default {
 
 <style scoped>
 .form-item {
-  margin-right: 10px;
   display: flex;
   align-items: center;
 }
@@ -57,7 +61,6 @@ export default {
   padding: 0 10px;
   border-radius: 6px;
   height: 32px;
-  margin: 0 10px;
   border: 1px solid #999;
   box-sizing: border-box;
   width: 100%;

@@ -29,12 +29,17 @@ export default {
   padding: 0 10px;
   border-radius: 6px;
   height: 32px;
-  margin: 0 10px;
   border: 1px solid #35495e;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  background: #35495e;
+  background-color: #35495e;
   color: #fff;
   cursor: pointer;
+  transition: all 0.2s ease-in;
+}
+
+.btn:hover,
+.btn:focus {
+  opacity: 0.8;
 }
 </style>

@@ -2,6 +2,7 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
     <div class="container">
+      <!-- Slot -->
       <base-header title="Todo List">
         <div class="sort-filter">
           <form-select
@@ -20,11 +21,14 @@
       </base-header>
       <base-loading v-if="loading" />
       <todo-list
+        ref="todoList"
         :todoList="todoList"
+        :editTodoForm="editTodoForm"
         @removeTodo="removeTodo"
+        @showEditForm="showEditForm"
       />
-      <add-todo-form
-        :addTodoForm="addTodoForm"
+      <todo-form
+        :todoForm="addTodoForm"
         @changeTaskVal="updateNewTodoTask"
         @changePriorityVal="updateNewTodoPriority"
         @clickBtn="addTodo"
@@ -34,23 +38,25 @@
 </template>
 
 <script>
-// import deepcopy from 'deepcopy';
+import deepcopy from 'deepcopy';
 import BaseLoading from './components/BaseLoading.vue';
 import BaseHeader from './components/BaseHeader.vue';
 import FormSelect from './components/FormSelect.vue';
 import TodoList from './components/TodoList.vue';
-import AddTodoForm from './components/AddTodoForm.vue';
+import TodoForm from './components/TodoForm.vue';
 import { setTimeout } from 'timers';
 
 export default {
   name: 'app',
+
   components: {
     BaseLoading,
     BaseHeader,
     FormSelect,
     TodoList,
-    AddTodoForm
+    TodoForm
   },
+
   data: function() {
     return {
       loading: false,
@@ -96,6 +102,7 @@ export default {
         val: 'all'
       },
       addTodoForm: {
+        formClass: 'add-todo-form',
         task: {
           className: 'add-task',
           errClassName: '',
@@ -123,13 +130,15 @@ export default {
           }],
           val: '0'
         },
-        addBtn: {
+        saveBtn: {
           className: 'add-btn',
           label: 'Add'
         }
-      }
+      },
+      editTodoForm: {}
     };
   },
+
   methods: {
     getTodoList: function() {
       this.loading = true;
@@ -138,9 +147,16 @@ export default {
         // Simulate network.
         setTimeout(() => {
           this.loading = false;
-          this.todoList = response.data.todoList;
+          this.todoList = this.reorgenaizeTodoList(response.data.todoList);
         }, 1000);
       });
+    },
+
+    reorgenaizeTodoList: function(todoList) {
+      todoList.forEach(element => {
+        element.editing = false;
+      });
+      return todoList;
     },
 
     updateNewTodoTask: function(val) {
@@ -170,10 +186,26 @@ export default {
 
     removeTodo: function(index) {
       this.todoList.splice(index, 1);
+    },
+
+    showEditForm: function(index, item) {
+      this.todoList[index].editing = true;
+      this.editTodoForm.task.val = item.task;
+      this.editTodoForm.priority.val = item.priority;
+
+      // $refs
+      this.$nextTick(() => {
+        this.$refs.todoList.$refs.todoForm[0].$refs.formText.select();
+      });
     }
   },
+
   mounted: function() {
     this.getTodoList();
+
+    this.editTodoForm = deepcopy(this.addTodoForm);
+    this.editTodoForm.saveBtn.label = 'Save';
+    this.editTodoForm.formClass = 'edit-todo-form';
   }
 }
 </script>
@@ -211,6 +243,10 @@ export default {
 
 .icon-exclamation:before {
   content: "\f12a";
+}
+
+.icon-pencil:before {
+  content: "\e905";
 }
 
 #app {

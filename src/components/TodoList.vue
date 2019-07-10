@@ -1,57 +1,56 @@
 <template>
-  <ul>
+  <ul class="todo-list">
     <!-- 列表渲染 -->
-    <li v-for="(item, index) in todoList" :key="item.id">
-      <form-checkbox
-        :checkboxIndex="index"
-        @changeStatus="removeTodo"
+    <li
+      v-for="(item, index) in todoList"
+      class="todo-item-container"
+      :key="item.id"
+    >
+      <todo-item
+        v-if="!item.editing"
+        :item="item"
+        :listIndex="index"
+        v-on="$listeners"
       />
-      <div class="task">{{ item.task }}</div>
-      <todo-list-priority
-        :v-if="item.priority"
-        :priority="item.priority"
+      <todo-form
+        ref="todoForm"
+        v-if="item.editing"
+        :todoForm="editTodoForm"
       />
     </li>
   </ul>
 </template>
 
 <script>
-import FormCheckbox from './FormCheckbox.vue';
-import TodoListPriority from './TodoListPriority.vue';
+import TodoItem from './TodoItem.vue';
+import TodoForm from './TodoForm.vue';
 
 export default {
   name: 'TodoList',
   components: {
-    FormCheckbox,
-    TodoListPriority
+    TodoItem,
+    TodoForm
   },
   props: {
-    todoList: Array
-  },
-  methods: {
-    removeTodo: function(index) {
-      this.$emit('removeTodo', index);
-    }
+    todoList: Array,
+    editTodoForm: Object
   }
 }
 </script>
 
 <style scoped>
-ul {
+.todo-list {
   list-style: none;
   padding: 0;
 }
 
-li {
-  display: flex;
-  align-items: center;
+.todo-item-container {
   margin-bottom: 20px;
   padding-bottom: 20px;
   border-bottom: 1px dashed #ccc;
 }
 
-.task {
-  width: 70%;
-  margin: 0 4%;
+.todo-list .todo-form {
+  margin: 0;
 }
 </style>

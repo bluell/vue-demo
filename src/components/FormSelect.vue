@@ -61,7 +61,6 @@ export default {
 
 <style scoped>
 .form-item {
-  margin-right: 10px;
   display: flex;
   align-items: center;
 }
@@ -74,7 +73,6 @@ export default {
   padding: 0 10px;
   border-radius: 6px;
   height: 32px;
-  margin: 0 10px;
   border: 1px solid #999;
   box-sizing: border-box;
   width: 100%;
