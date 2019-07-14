@@ -26,6 +26,9 @@
         :editTodoForm="editTodoForm"
         @removeTodo="removeTodo"
         @showEditForm="showEditForm"
+        @changeTaskVal="updateEditTodoTask"
+        @changePriorityVal="updateEditTodoPriority"
+        @clickBtn="editTodo"
       />
       <todo-form
         :todoForm="addTodoForm"
@@ -135,7 +138,9 @@ export default {
           label: 'Add'
         }
       },
-      editTodoForm: {}
+      editTodoForm: {},
+      editIndexLast: -1,
+      editIndex: -1
     };
   },
 
@@ -184,6 +189,32 @@ export default {
       }
     },
 
+    updateEditTodoTask: function(val) {
+      this.editTodoForm.task.val = val;
+    },
+
+    updateEditTodoPriority: function(val) {
+      this.editTodoForm.priority.val = val;
+    },
+
+    editTodo: function(paramArr) {
+      if (this.editTodoForm.task.val === '') {
+        this.editTodoForm.task.errClassName = 'error';
+      }
+      else {
+        let index = paramArr[0];
+        this.todoList[index].task = this.editTodoForm.task.val;
+        this.todoList[index].priority = this.editTodoForm.priority.val;
+        this.todoList[index].editing = false;
+      }
+    },
+
+    cancelEditTodo: function() {
+      if (this.editIndexLast >= 0) {
+        this.todoList[this.editIndexLast].editing = false;
+      }
+    },
+
     removeTodo: function(index) {
       this.todoList.splice(index, 1);
     },
@@ -192,6 +223,8 @@ export default {
       this.todoList[index].editing = true;
       this.editTodoForm.task.val = item.task;
       this.editTodoForm.priority.val = item.priority;
+      this.editIndexLast = this.editIndex;
+      this.editIndex = index;
 
       // $refs
       this.$nextTick(() => {
@@ -206,6 +239,8 @@ export default {
     this.editTodoForm = deepcopy(this.addTodoForm);
     this.editTodoForm.saveBtn.label = 'Save';
     this.editTodoForm.formClass = 'edit-todo-form';
+
+    window.addEventListener('click', this.cancelEditTodo);
   }
 }
 </script>
@@ -272,5 +307,13 @@ h1 {
 .sort-filter {
   display: flex;
   align-items: center;
+}
+
+.sort-filter .form-item {
+  margin-right: 10px;
+}
+
+.sort-filter .form-select {
+  margin: 0 10px;
 }
 </style>

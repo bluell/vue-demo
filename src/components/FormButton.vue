@@ -14,11 +14,12 @@ export default {
   name: 'FormButton',
   props: {
     className: String,
-    label: String
+    label: String,
+    paramArr: Array
   },
   methods: {
     clickBtn: function() {
-      this.$emit('clickBtn');
+      this.$emit('clickBtn', this.paramArr);
     }
   }
 }

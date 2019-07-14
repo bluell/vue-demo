@@ -16,6 +16,8 @@
         ref="todoForm"
         v-if="item.editing"
         :todoForm="editTodoForm"
+        :listIndex="index"
+        v-on="$listeners"
       />
     </li>
   </ul>

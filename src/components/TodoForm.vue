@@ -21,6 +21,7 @@
     <form-button
       :className="todoForm.saveBtn.className"
       :label="todoForm.saveBtn.label"
+      :paramArr="[listIndex]"
       v-on="$listeners"
     />
   </div>
@@ -56,7 +57,8 @@ export default {
         className: String,
         label: String
       }
-    }
+    },
+    listIndex: Number
   },
   methods: {
     changeTaskVal: function(val) {
