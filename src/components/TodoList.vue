@@ -1,8 +1,8 @@
 <template>
   <ul class="todo-list">
-    <!-- 列表渲染 -->
+    <!-- 列表渲染：避免v-if和v-for用在一起，用computed代替v-if -->
     <li
-      v-for="(item, index) in todoList"
+      v-for="(item, index) in activeTodoList"
       class="todo-item-container"
       :key="item.id"
     >
@@ -36,6 +36,17 @@ export default {
   props: {
     todoList: Array,
     editTodoForm: Object
+  },
+  computed: {
+    activeTodoList: function() {
+      let activeTodoList = [];
+      this.todoList.forEach(element => {
+        if (element.show) {
+          activeTodoList.push(element);
+        }
+      });
+      return activeTodoList;
+    }
   }
 }
 </script>

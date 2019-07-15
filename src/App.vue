@@ -6,16 +6,17 @@
       <base-header title="Todo List">
         <div class="sort-filter">
           <form-select
-            :htmlId="sort.htmlId"
-            :label="sort.label"
-            :options="sort.options"
-            :val="sort.val"
+            :htmlId="sortEle.htmlId"
+            :label="sortEle.label"
+            :options="sortEle.options"
+            :val="sortEle.val"
           />
           <form-select
-            :htmlId="filter.htmlId"
-            :label="filter.label"
-            :options="filter.options"
-            :val="filter.val"
+            :htmlId="filterEle.htmlId"
+            :label="filterEle.label"
+            :options="filterEle.options"
+            :val="filterEle.val"
+            @changeVal="filter"
           />
         </div>
       </base-header>
@@ -64,7 +65,7 @@ export default {
     return {
       loading: false,
       todoList: [],
-      sort: {
+      sortEle: {
         htmlId: 'sort-todo-list',
         label: 'Sort',
         options: [{
@@ -82,7 +83,7 @@ export default {
         }],
         val: 'sort by time'
       },
-      filter: {
+      filterEle: {
         htmlId: 'filter-todo-list',
         label: 'Filter',
         options: [{
@@ -144,6 +145,16 @@ export default {
     };
   },
 
+  mounted: function() {
+    this.getTodoList();
+
+    this.editTodoForm = deepcopy(this.addTodoForm);
+    this.editTodoForm.saveBtn.label = 'Save';
+    this.editTodoForm.formClass = 'edit-todo-form';
+
+    window.addEventListener('click', this.cancelEditTodo);
+  },
+
   methods: {
     getTodoList: function() {
       this.loading = true;
@@ -160,6 +171,7 @@ export default {
     reorgenaizeTodoList: function(todoList) {
       todoList.forEach(element => {
         element.editing = false;
+        element.show = true;
       });
       return todoList;
     },
@@ -180,7 +192,9 @@ export default {
         let newTodo = {
           id: new Date().getTime(),
           task: this.addTodoForm.task.val,
-          priority: this.addTodoForm.priority.val
+          priority: this.addTodoForm.priority.val,
+          editing: false,
+          show: true
         };
         this.todoList.push(newTodo);
         this.addTodoForm.task.val = '';
@@ -230,17 +244,20 @@ export default {
       this.$nextTick(() => {
         this.$refs.todoList.$refs.todoForm[0].$refs.formText.select();
       });
+    },
+
+    filter: function(val) {
+      this.todoList.forEach(element => {
+        switch (val) {
+          case 'all':
+          case element.priority:
+            element.show = true;
+            break;
+          default: 
+            element.show = false;
+        }
+      });
     }
-  },
-
-  mounted: function() {
-    this.getTodoList();
-
-    this.editTodoForm = deepcopy(this.addTodoForm);
-    this.editTodoForm.saveBtn.label = 'Save';
-    this.editTodoForm.formClass = 'edit-todo-form';
-
-    window.addEventListener('click', this.cancelEditTodo);
   }
 }
 </script>
