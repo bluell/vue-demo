@@ -6,7 +6,7 @@
     <input
       type="checkbox"
       class="form-checkbox"
-      @change="changeStatus"
+      @click="changeStatus"
     />
   </div>
 </template>
@@ -19,7 +19,8 @@ export default {
     checkboxClass: String
   },
   methods: {
-    changeStatus: function() {
+    changeStatus: function(e) {
+      e.stopPropagation();
       this.$emit('changeStatus', this.checkboxIndex);
     }
   }

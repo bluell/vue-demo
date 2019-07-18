@@ -6,12 +6,6 @@
       <base-header title="Todo List">
         <div class="sort-filter">
           <form-select
-            :htmlId="sortEle.htmlId"
-            :label="sortEle.label"
-            :options="sortEle.options"
-            :val="sortEle.val"
-          />
-          <form-select
             :htmlId="filterEle.htmlId"
             :label="filterEle.label"
             :options="filterEle.options"
@@ -140,7 +134,6 @@ export default {
         }
       },
       editTodoForm: {},
-      editIndexLast: -1,
       editIndex: -1
     };
   },
@@ -189,10 +182,12 @@ export default {
         this.addTodoForm.task.errClassName = 'error';
       }
       else {
+        const now = new Date();
         let newTodo = {
-          id: new Date().getTime(),
+          id: now.getTime(),
           task: this.addTodoForm.task.val,
           priority: this.addTodoForm.priority.val,
+          createTime: now.toISOString(),
           editing: false,
           show: true
         };
@@ -224,8 +219,9 @@ export default {
     },
 
     cancelEditTodo: function() {
-      if (this.editIndexLast >= 0) {
-        this.todoList[this.editIndexLast].editing = false;
+      if (this.editIndex >= 0) {
+        this.todoList[this.editIndex].editing = false;
+        this.editIndex = -1;
       }
     },
 
@@ -234,14 +230,15 @@ export default {
     },
 
     showEditForm: function(index, item) {
+      this.cancelEditTodo();
       this.todoList[index].editing = true;
       this.editTodoForm.task.val = item.task;
-      this.editTodoForm.priority.val = item.priority;
-      this.editIndexLast = this.editIndex;
+      this.editTodoForm.priority.val = item.priority || '0';
       this.editIndex = index;
 
-      // $refs
+      // $nextTick
       this.$nextTick(() => {
+        // $refs
         this.$refs.todoList.$refs.todoForm[0].$refs.formText.select();
       });
     },

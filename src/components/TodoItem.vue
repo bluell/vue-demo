@@ -44,7 +44,8 @@ export default {
       this.$emit('removeTodo', index);
     },
 
-    showEditForm: function() {
+    showEditForm: function(e) {
+      e.stopPropagation();
       this.$emit('showEditForm', this.listIndex, this.item);
     }
   }

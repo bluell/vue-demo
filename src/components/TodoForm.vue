@@ -2,6 +2,7 @@
   <div
     class="todo-form"
     :class="[todoForm.formClass]"
+    @click="clickForm"
   >
     <form-text
       ref="formText"
@@ -69,6 +70,12 @@ export default {
     
     changePriorityVal: function(val) {
       this.$emit('changePriorityVal', val);
+    },
+
+    clickForm: function(e) {
+      if (typeof(this.listIndex) !== 'undefined') {
+        e.stopPropagation();
+      }
     }
   }
 }
