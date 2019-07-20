@@ -1,5 +1,6 @@
 <template>
-  <ul class="todo-list">
+  <!-- 列表过度 -->
+  <transition-group class="todo-list" name="list" tag="ul">
     <!-- 列表渲染：避免v-if和v-for用在一起，用computed代替v-if -->
     <li
       v-for="(item, index) in activeTodoList"
@@ -20,7 +21,7 @@
         v-on="$listeners"
       />
     </li>
-  </ul>
+  </transition-group>
 </template>
 
 <script>
@@ -65,5 +66,23 @@ export default {
 
 .todo-list .todo-form {
   margin: 0;
+}
+
+.list-enter-active {
+  transition: all .2s ease-in;
+}
+
+.list-leave-active {
+  transition: all .2s ease-out;
+}
+
+.list-enter {
+  opacity: 0;
+  transform: translateX(50px);
+}
+
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(-50px);
 }
 </style>
