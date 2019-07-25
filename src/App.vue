@@ -25,12 +25,14 @@
         @changePriorityVal="updateEditTodoPriority"
         @clickBtn="editTodo"
       />
-      <todo-form
+      <router-link to="/add-task">Add task</router-link>
+      <router-view></router-view>
+      <!-- <todo-form
         :todoForm="addTodoForm"
         @changeTaskVal="updateNewTodoTask"
         @changePriorityVal="updateNewTodoPriority"
         @clickBtn="addTodo"
-      />
+      /> -->
     </div>
   </div>
 </template>
@@ -296,6 +298,10 @@ export default {
 
 .icon-pencil:before {
   content: "\e905";
+}
+
+.icon-plus:before {
+  content: "\ea0a";
 }
 
 #app {
