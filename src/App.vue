@@ -2,83 +2,37 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
     <div class="container">
-      <!-- Slot -->
-      <base-header title="Todo List">
-        <div class="sort-filter">
-          <form-select
-            :htmlId="filterEle.htmlId"
-            :label="filterEle.label"
-            :options="filterEle.options"
-            :val="filterEle.val"
-            @changeVal="filter"
-          />
-        </div>
-      </base-header>
-      <base-loading v-if="loading" />
-      <todo-list
-        ref="todoList"
+      <router-view
+        :loading="loading"
         :todoList="todoList"
+        :filterEle="filterEle"
         :editTodoForm="editTodoForm"
+        :addTodoForm="addTodoForm"
+        @filter="filter"
         @removeTodo="removeTodo"
         @showEditForm="showEditForm"
-        @changeTaskVal="updateEditTodoTask"
-        @changePriorityVal="updateEditTodoPriority"
-        @clickBtn="editTodo"
+        @updateEditTodoTask="updateEditTodoTask"
+        @updateEditTodoPriority="updateEditTodoPriority"
+        @updateNewTodoTask="updateNewTodoTask"
+        @updateNewTodoPriority="updateNewTodoPriority"
+        @editTodo="editTodo"
+        @addTodo="addTodo"
       />
-      <router-link to="/add-task">Add task</router-link>
-      <router-view></router-view>
-      <!-- <todo-form
-        :todoForm="addTodoForm"
-        @changeTaskVal="updateNewTodoTask"
-        @changePriorityVal="updateNewTodoPriority"
-        @clickBtn="addTodo"
-      /> -->
     </div>
   </div>
 </template>
 
 <script>
 import deepcopy from 'deepcopy';
-import BaseLoading from './components/BaseLoading.vue';
-import BaseHeader from './components/BaseHeader.vue';
-import FormSelect from './components/FormSelect.vue';
-import TodoList from './components/TodoList.vue';
-import TodoForm from './components/TodoForm.vue';
 import { setTimeout } from 'timers';
 
 export default {
   name: 'app',
 
-  components: {
-    BaseLoading,
-    BaseHeader,
-    FormSelect,
-    TodoList,
-    TodoForm
-  },
-
   data: function() {
     return {
       loading: false,
       todoList: [],
-      sortEle: {
-        htmlId: 'sort-todo-list',
-        label: 'Sort',
-        options: [{
-          id: 'sort-by-time',
-          value: 'sort by time',
-          text: '按创建顺序'
-        }, {
-          id: 'sort-by-priority-asc',
-          value: 'sort by priority asc',
-          text: 'Priority高的在前面'
-        }, {
-          id: 'sort-by-priority-des',
-          value: 'sort by priority des',
-          text: 'Priority低的在前面'
-        }],
-        val: 'sort by time'
-      },
       filterEle: {
         htmlId: 'filter-todo-list',
         label: 'Filter',
@@ -197,6 +151,7 @@ export default {
         this.addTodoForm.task.val = '';
         this.addTodoForm.priority.val = '0';
         this.addTodoForm.task.errClassName = '';
+        this.$router.push({ path: '/' });
       }
     },
 
@@ -322,6 +277,16 @@ export default {
 
 h1 {
   margin: 0;
+}
+
+a {
+  color: #35495E;
+  transition: all 0.2s ease-in;
+}
+
+a:hover,
+a:focus {
+  color: #41b883;
 }
 
 .sort-filter {
