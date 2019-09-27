@@ -3,6 +3,7 @@
     <img alt="Vue logo" src="./assets/logo.png" />
     <div class="container">
       <router-view
+        ref="todoRouter"
         :loading="loading"
         :todoList="todoList"
         :filterEle="filterEle"
@@ -194,9 +195,10 @@ export default {
       this.editIndex = index;
 
       // $nextTick
-      this.$nextTick(() => {
+      this.$nextTick().then(() => {
         // $refs
-        this.$refs.todoList.$refs.todoForm[0].$refs.formText.select();
+        this.$refs.todoRouter.$refs.todoList
+          .$refs.todoForm[0].$refs.formText.select();
       });
     },
 

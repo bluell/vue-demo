@@ -38,6 +38,7 @@ export default {
     todoList: Array,
     editTodoForm: Object
   },
+  // Computed.
   computed: {
     activeTodoList: function() {
       let activeTodoList = [];
