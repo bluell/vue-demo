@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: 'TodoListPriority',
+  name: 'TodoListItemPriority',
   props: {
     priority: String
   },

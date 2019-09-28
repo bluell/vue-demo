@@ -7,7 +7,7 @@
       class="todo-item-container"
       :key="item.id"
     >
-      <todo-item
+      <todo-list-item
         v-if="!item.editing"
         :item="item"
         :listIndex="index"
@@ -25,13 +25,13 @@
 </template>
 
 <script>
-import TodoItem from './TodoItem.vue';
+import TodoListItem from './TodoListItem.vue';
 import TodoForm from './TodoForm.vue';
 
 export default {
   name: 'TodoList',
   components: {
-    TodoItem,
+    TodoListItem,
     TodoForm
   },
   props: {
@@ -63,18 +63,11 @@ export default {
   margin-bottom: 20px;
   padding-bottom: 20px;
   border-bottom: 1px dashed #ccc;
+  transition: all .2s ease-in;
 }
 
 .todo-list .todo-form {
   margin: 0;
-}
-
-.list-enter-active {
-  transition: all .2s ease-in;
-}
-
-.list-leave-active {
-  transition: all .2s ease-out;
 }
 
 .list-enter {

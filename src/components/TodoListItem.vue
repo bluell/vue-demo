@@ -9,7 +9,7 @@
       @changeStatus="removeTodo"
     />
     <div class="task">{{ item.task }}</div>
-    <todo-list-priority
+    <todo-list-item-priority
       :v-if="item.priority"
       :priority="item.priority"
     />
@@ -18,13 +18,13 @@
 
 <script>
 import FormCheckbox from './FormCheckbox.vue';
-import TodoListPriority from './TodoListPriority.vue';
+import TodoListItemPriority from './TodoListItemPriority.vue';
 
 export default {
-  name: 'TodoItem',
+  name: 'TodoListItem',
   components: {
     FormCheckbox,
-    TodoListPriority
+    TodoListItemPriority
   },
   props: {
     item: {
